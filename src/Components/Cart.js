@@ -1,18 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Table from "react-bootstrap/Table";
 import Image from "react-bootstrap/Image";
+import CartContext from "./Context";
 
 function Cart(props) {
+  const cartCtx = useContext(CartContext);
   return (
     <>
-      <Offcanvas
-        show={props.show}
-        onHide={props.handleClose}
-        {...props}
-        placement="end"
-      >
+      <Offcanvas show={props.show} onHide={props.handleclose} placement="end">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Cart</Offcanvas.Title>
         </Offcanvas.Header>
@@ -28,20 +25,20 @@ function Cart(props) {
               </tr>
             </thead>
             <tbody className="align-middle">
-              {propducts.map((product) => {
+              {cartCtx.items.map((item) => {
                 return (
-                  <tr>
+                  <tr key={item.id}>
                     <td>
                       <Image
                         fluid={true}
                         rounded={true}
                         thumbnail="true"
-                        src={product.imageUrl}
+                        src={item.image}
                       />
                     </td>
-                    <td> {product.title}</td>
-                    <td>{product.price}</td>
-                    <td>{product.quantity}</td>
+                    <td> {item.title}</td>
+                    <td>$ {item.price.toFixed(2)}</td>
+                    <td>{item.qty}</td>
                     <td>
                       <Button variant="danger" size="sm">
                         Remove
@@ -50,6 +47,14 @@ function Cart(props) {
                   </tr>
                 );
               })}
+
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total</td>
+                <td>$ {cartCtx.totalAmount}</td>
+              </tr>
             </tbody>
           </Table>
           <Button>Purchage</Button>
@@ -60,35 +65,3 @@ function Cart(props) {
 }
 
 export default Cart;
-
-const propducts = [
-  {
-    title: "Colors",
-
-    price: 100,
-
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%201.png",
-
-    quantity: 2,
-  },
-
-  {
-    title: "Black and white Colors",
-
-    price: 50,
-
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%202.png",
-
-    quantity: 3,
-  },
-
-  {
-    title: "Yellow and Black Colors",
-
-    price: 70,
-
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%203.png",
-
-    quantity: 1,
-  },
-];

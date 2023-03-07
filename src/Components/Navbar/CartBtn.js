@@ -1,12 +1,16 @@
-import React from 'react'
+import React,{useContext} from "react";
 import { Button } from 'react-bootstrap'
+import CartContext from '../Context'
 
 function CartBtn(props) {
+    const ctx = useContext(CartContext)
+    
     const CartClickHandler =() =>{
-        props.handleShow()
+        console.log({length:ctx.items})
+        props.handleshow()
     }
   return (
-    <Button onClick={CartClickHandler}>{props.name}  {props.itemCount}</Button>
+    <Button onClick={CartClickHandler}>{props.name}  {ctx.items.length}</Button>
   )
 }
 

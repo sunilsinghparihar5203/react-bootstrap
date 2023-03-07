@@ -23,7 +23,7 @@ function MyNav(props) {
           </Nav>
         </Navbar.Collapse>
         <Nav className="justify-content-end">
-          {props.cartBtn && <CartBtn name="Cart" itemCount={3} show={props.show}  handleClose={props.handleClose} handleShow={props.handleShow} />}
+          {props.cartBtn && <CartBtn name="Cart" show={props.show} handleshow={props.handleshow} />}
         </Nav>
       </Container>
     </Navbar>
