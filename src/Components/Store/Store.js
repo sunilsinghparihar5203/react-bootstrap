@@ -13,7 +13,7 @@ function Store() {
   const handleShow = () => setShow(true);
   return (
     <>
-      <MyNav cartBtn={true}  handleshow={handleShow} />
+      <MyNav cartBtn={true}  handleshow={handleShow} activeKey = "/store"/>
       <Container>
         <Hero title="Products" />
         <ItemList Items={propducts} />

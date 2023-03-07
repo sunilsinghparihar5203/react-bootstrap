@@ -7,7 +7,7 @@ function Item(props) {
   const addtoCartHandler = () =>{
     console.log({ctx:ctx})
     const item = {
-      id:props.id,title:props.title,ImageURL:props.ImageURL,price:props.price,qty:1
+      id:props.id,title:props.title,image:props.ImageURL,price:props.price,qty:1
     }
     ctx.addItem(item)
   }
