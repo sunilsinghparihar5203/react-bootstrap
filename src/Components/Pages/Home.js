@@ -1,6 +1,7 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import MyNav from "../Navbar/MyNav";
+import Footer from "../UI/Footer";
 import Hero from "../UI/Hero";
 
 function Home() {
@@ -13,6 +14,7 @@ function Home() {
           This is home page
         </p>
       </Container>
+      <Footer />
     </>
   );
 }
