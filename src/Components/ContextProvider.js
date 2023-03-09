@@ -1,6 +1,6 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import ReactDOM from "react-dom/client";
-import CardContext from "./Context";
+import { CartContext, productsContext, showCartContext } from "./Context";
 
 const defaultCartState = {
   items: [],
@@ -27,7 +27,7 @@ const cartReducer = (state, action) => {
         updatedItems[existingCartItemIndex] = updatedItem;
         updatedTotalAmount = state.totalAmount + action.item.price;
       } else {
-        updatedItems = state.items.concat(action.item)
+        updatedItems = state.items.concat(action.item);
         updatedTotalAmount = state.totalAmount + action.item.price;
       }
       return {
@@ -50,6 +50,10 @@ const cartReducer = (state, action) => {
 };
 
 function ContextProvider(props) {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const [cartState, dispatchCartAction] = useReducer(
     cartReducer,
     defaultCartState
@@ -69,10 +73,50 @@ function ContextProvider(props) {
     removeItem: removeItemFromCartHandler,
   };
 
+  const products = [
+    {
+      id: "1",
+      title: "Colors",
+      price: 100,
+      imageUrl:
+        "https://prasadyash2411.github.io/ecom-website/img/Album%201.png",
+    },
+    {
+      id: "2",
+      title: "Black and white Colors",
+      price: 50,
+      imageUrl:
+        "https://prasadyash2411.github.io/ecom-website/img/Album%202.png",
+    },
+    {
+      id: "3",
+      title: "Yellow and Black Colors",
+      price: 70,
+      imageUrl:
+        "https://prasadyash2411.github.io/ecom-website/img/Album%203.png",
+    },
+    {
+      id: "4",
+      title: "Blue Color",
+      price: 100,
+      imageUrl:
+        "https://prasadyash2411.github.io/ecom-website/img/Album%204.png",
+    },
+  ];
+
+  const showContext = {
+    handleClose : handleClose,
+    handleShow : handleShow,
+    show : show,
+  }
   return (
-    <CardContext.Provider value={cartContext}>
-      {props.children}
-    </CardContext.Provider>
+    <CartContext.Provider value={cartContext}>
+      <productsContext.Provider value={products}>
+        <showCartContext.Provider value={showContext}>
+          {props.children}
+        </showCartContext.Provider>
+      </productsContext.Provider>
+    </CartContext.Provider>
   );
 }
 

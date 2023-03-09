@@ -28,8 +28,7 @@ function Contact() {
   }
   return (
     <>
-      <MyNav cartBtn={false} activeKey="/contact" />
-      <Container>
+      <Container className="vh-100">
         <Hero title="Contact Us" />
         <div className="d-flex justify-content-center">
           <div className="col-md-6">

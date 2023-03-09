@@ -1,18 +1,20 @@
-import React from "react";
+import React,{useContext} from "react";
 import { Container } from "react-bootstrap";
 import MyNav from "../Navbar/MyNav";
 import Footer from "../UI/Footer";
 import Hero from "../UI/Hero";
+import { Outlet } from "react-router-dom";
+import { showCartContext } from "../Context";
+import Cart from "../Cart";
 
 function Home() {
+  const showContext = useContext(showCartContext)
   return (
     <>
-      <MyNav cartBtn={false} activeKey = "/"/>
+      <MyNav cartBtn={true} activeKey = "/"/>
       <Container>
-        <Hero title="Home" />
-        <p>
-          This is home page
-        </p>
+        <Outlet />
+        <Cart  show={showContext.show}/>
       </Container>
       <Footer />
     </>

@@ -3,13 +3,14 @@ import Button from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Table from "react-bootstrap/Table";
 import Image from "react-bootstrap/Image";
-import CartContext from "./Context";
+import {CartContext,showCartContext} from "./Context";
 
 function Cart(props) {
   const cartCtx = useContext(CartContext);
+  const showContext = useContext(showCartContext);
   return (
     <>
-      <Offcanvas show={props.show} onHide={props.handleclose} placement="end">
+      <Offcanvas show={showContext.show} onHide={showContext.handleClose} placement="end">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Cart</Offcanvas.Title>
         </Offcanvas.Header>

@@ -1,10 +1,16 @@
-import React from 'react'
+import React,{createContext} from 'react'
 
-const CartContext = React.createContext({
+export const CartContext = createContext({
     items:[],
     totalAmount : 0,
     addItem:(item)=>{},
     removeItem:(id)=>{}
 })
 
-export default CartContext;
+export const productsContext = createContext([])
+
+
+export const showCartContext = createContext({
+    handleClose: ()=>{},
+    handleShow: ()=>{},
+})

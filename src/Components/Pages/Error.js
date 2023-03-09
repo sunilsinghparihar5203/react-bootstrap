@@ -6,8 +6,7 @@ import Hero from "../UI/Hero";
 function Error404() {
   return (
     <>
-      <MyNav cartBtn={false} activeKey = ""/>
-      <Container>
+      <Container className="vh-100">
         <Hero title="There is something wrong" />
       </Container>
     </>
