@@ -1,10 +1,24 @@
+import React,{useContext} from 'react'
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import { NavLink } from 'react-router-dom';
 import Navbar from "react-bootstrap/Navbar";
 import CartBtn from "./CartBtn";
+import { authContext } from "../Context";
+import { Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 function MyNav(props) {
+  const authCtx = useContext(authContext)
+  const navigate = useNavigate()
+  const loginLogoutHandler = () =>{
+    if(authCtx.isLoggin){
+      authCtx.logout()
+      navigate('/login')
+    }else{
+      navigate('/login')
+    }
+  }
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="sticky-top">
       <Container>
@@ -27,7 +41,8 @@ function MyNav(props) {
           </Nav>
         </Navbar.Collapse>
         <Nav className="justify-content-end">
-          {props.cartBtn && <CartBtn name="Cart" />}
+          {props.cartBtn && authCtx.isLoggin && <CartBtn name="Cart" />}
+          <a className=' mx-2 btn btn-sm  text-white' onClick={loginLogoutHandler}>{authCtx.isLoggin ? "Logout" : 'Login'}</a>
         </Nav>
       </Container>
     </Navbar>

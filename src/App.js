@@ -8,6 +8,7 @@ import Error from "./Components/Pages/Error";
 import Contact from "./Components/Pages/Contact";
 import ItemDetail from "./Components/Store/ItemDetail";
 import Welcome from "./Components/Pages/Welcome";
+import Login from "./Components/Pages/Login";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
       { path: "/store", element: <Store />},
       { path: "/about", element: <About /> },
       { path: "/contact", element: <Contact /> },
+      { path: "/login", element: <Login /> },
       {path: "/store/:productId",element: <ItemDetail />},
     ],
   },

@@ -1,6 +1,5 @@
 import React, { useReducer, useState } from "react";
-import ReactDOM from "react-dom/client";
-import { CartContext, productsContext, showCartContext } from "./Context";
+import { CartContext, productsContext, showCartContext ,authContext} from "./Context";
 
 const defaultCartState = {
   items: [],
@@ -50,17 +49,26 @@ const cartReducer = (state, action) => {
 };
 
 function ContextProvider(props) {
+  const initialToken = localStorage.getItem('token')
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [token,setToken]  = useState(initialToken)
+  const isLoggedin = !!token;
+  
   const [cartState, dispatchCartAction] = useReducer(
     cartReducer,
     defaultCartState
   );
 
   const addItemToCartHandler = (item) => {
-    dispatchCartAction({ type: "ADD", item: item });
+    if(isLoggedin){
+      dispatchCartAction({ type: "ADD", item: item });
+    }else{
+      alert("Please login first!")
+    }
+    
   };
 
   const removeItemFromCartHandler = (id) => {
@@ -109,11 +117,27 @@ function ContextProvider(props) {
     handleShow : handleShow,
     show : show,
   }
+  const loginHandler = (token) =>{
+      setToken(token)
+  }
+  const logoutHandler = () =>{
+    setToken(null)
+    localStorage.removeItem("token");
+  }
+
+  const authContextData={
+    token:token,
+    isLoggin:isLoggedin,
+    login:loginHandler,
+    logout:logoutHandler
+  }
   return (
     <CartContext.Provider value={cartContext}>
       <productsContext.Provider value={products}>
         <showCartContext.Provider value={showContext}>
-          {props.children}
+          <authContext.Provider value={authContextData}>
+            {props.children}
+          </authContext.Provider>
         </showCartContext.Provider>
       </productsContext.Provider>
     </CartContext.Provider>

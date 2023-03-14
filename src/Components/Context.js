@@ -14,3 +14,11 @@ export const showCartContext = createContext({
     handleClose: ()=>{},
     handleShow: ()=>{},
 })
+
+export const authContext = createContext({
+    token:'',
+    isLoggin:false,
+    login: (token)=>{},
+    logout:()=>{}
+})
+
