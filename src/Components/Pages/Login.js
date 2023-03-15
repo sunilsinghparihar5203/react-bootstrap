@@ -1,6 +1,6 @@
 import React, { useState, useRef, useContext } from "react";
 import { authContext } from "../Context";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function Login() {
   const emailRef = useRef();
@@ -9,7 +9,7 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   const authCtx = useContext(authContext);
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -49,11 +49,10 @@ function Login() {
       })
       .then((data) => {
         setIsLoading(false);
-        console.log({ navigate: navigate });
+        console.log({ history: history });
         if (isloginForm) {
           authCtx.login(data.idToken);
-          localStorage.setItem('token',data.idToken)
-          navigate("/");
+          history.push("/");
         } else {
           alert("User registerd! Please Login now.");
           formHandler();
@@ -78,7 +77,7 @@ function Login() {
   };
 
   return (
-    <div className="container d-flex justify-content-center my-4">
+    <div className="container d-flex justify-content-center my-4" >
       <div className="col-md-4">
         <h1>{isloginForm ? "Login" : "Signup"}</h1>
         <form onSubmit={submitHandler}>
@@ -112,7 +111,7 @@ function Login() {
 
         <div className="my-3">
           <p>
-            <a onClick={formHandler} style={{ cursor: "pointer" }}>
+            <a href="#" onClick={formHandler} style={{ cursor: "pointer" }}>
               {isloginForm
                 ? "Create a new account"
                 : "login with existing account"}

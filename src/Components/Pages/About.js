@@ -1,6 +1,5 @@
 import React from "react";
 import { Container } from "react-bootstrap";
-import MyNav from "../Navbar/MyNav";
 import Hero from "../UI/Hero";
 
 function About() {
@@ -8,7 +7,7 @@ function About() {
     <>
       <Container className="vh-100">
         <Hero title="About Us" />
-        <p >
+        <p>
           Lorem ipsum carrots enhanced rebates. Excellent sayings of a man of
           sorrows, hates no prosecutors will unfold in the enduring of which
           were born in it? Often leads smallest mistake some pain main

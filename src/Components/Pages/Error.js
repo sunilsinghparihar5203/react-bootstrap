@@ -1,6 +1,5 @@
 import React from "react";
 import { Container } from "react-bootstrap";
-import MyNav from "../Navbar/MyNav";
 import Hero from "../UI/Hero";
 
 function Error404() {

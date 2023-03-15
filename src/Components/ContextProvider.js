@@ -55,7 +55,7 @@ function ContextProvider(props) {
   const handleShow = () => setShow(true);
 
   const [token,setToken]  = useState(initialToken)
-  const isLoggedin = !!token;
+  const isLoggin = !!token;
   
   const [cartState, dispatchCartAction] = useReducer(
     cartReducer,
@@ -63,7 +63,7 @@ function ContextProvider(props) {
   );
 
   const addItemToCartHandler = (item) => {
-    if(isLoggedin){
+    if(isLoggin){
       dispatchCartAction({ type: "ADD", item: item });
     }else{
       alert("Please login first!")
@@ -119,6 +119,7 @@ function ContextProvider(props) {
   }
   const loginHandler = (token) =>{
       setToken(token)
+      localStorage.setItem('token',token)
   }
   const logoutHandler = () =>{
     setToken(null)
@@ -127,7 +128,7 @@ function ContextProvider(props) {
 
   const authContextData={
     token:token,
-    isLoggin:isLoggedin,
+    isLoggin:isLoggin,
     login:loginHandler,
     logout:logoutHandler
   }
