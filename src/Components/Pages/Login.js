@@ -49,9 +49,9 @@ function Login() {
       })
       .then((data) => {
         setIsLoading(false);
-        console.log({ history: history });
         if (isloginForm) {
-          authCtx.login(data.idToken);
+          authCtx.login(data.idToken,email.split("@")[0]);
+          console.log({email: email.split("@")[0]})
           history.push("/");
         } else {
           alert("User registerd! Please Login now.");
@@ -77,7 +77,7 @@ function Login() {
   };
 
   return (
-    <div className="container d-flex justify-content-center my-4" >
+    <div className="container d-flex justify-content-center my-4 vh-100" >
       <div className="col-md-4">
         <h1>{isloginForm ? "Login" : "Signup"}</h1>
         <form onSubmit={submitHandler}>
@@ -111,11 +111,11 @@ function Login() {
 
         <div className="my-3">
           <p>
-            <a href="#" onClick={formHandler} style={{ cursor: "pointer" }}>
+            <p onClick={formHandler} style={{ cursor: "pointer" }}>
               {isloginForm
                 ? "Create a new account"
                 : "login with existing account"}
-            </a>
+            </p>
           </p>
         </div>
       </div>

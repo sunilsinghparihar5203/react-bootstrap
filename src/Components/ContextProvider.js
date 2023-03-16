@@ -1,82 +1,93 @@
-import React, { useReducer, useState } from "react";
-import { CartContext, productsContext, showCartContext ,authContext} from "./Context";
-
-const defaultCartState = {
-  items: [],
-  totalAmount: 0,
-};
-
-const cartReducer = (state, action) => {
-  var updatedTotalAmount;
-  var updatedItems = [];
-  switch (action.type) {
-    case "ADD":
-      const existingCartItemIndex = state.items.findIndex(
-        (item) => item.id === action.item.id
-      );
-
-      const existingCartItem = state.items[existingCartItemIndex];
-
-      if (existingCartItem) {
-        const updatedItem = {
-          ...existingCartItem,
-          qty: existingCartItem.qty + action.item.qty,
-        };
-        updatedItems = [...state.items];
-        updatedItems[existingCartItemIndex] = updatedItem;
-        updatedTotalAmount = state.totalAmount + action.item.price;
-      } else {
-        updatedItems = state.items.concat(action.item);
-        updatedTotalAmount = state.totalAmount + action.item.price;
-      }
-      return {
-        items: updatedItems,
-        totalAmount: updatedTotalAmount,
-      };
-      break;
-
-    case "REMOVE":
-      updatedItems = state.items.filter((item) => item.id !== action.item.id);
-      updatedTotalAmount = state.totalAmount - action.item.price;
-      return {
-        items: updatedItems,
-        totalAmount: updatedTotalAmount,
-      };
-
-      break;
-  }
-  return defaultCartState;
-};
+import React, { useState, useEffect } from "react";
+import {
+  CartContext,
+  productsContext,
+  showCartContext,
+  authContext,
+} from "./Context";
+import axios from "axios";
 
 function ContextProvider(props) {
-  const initialToken = localStorage.getItem('token')
+  const initialToken = localStorage.getItem("token");
+  const initialEmail = localStorage.getItem("email");
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [token,setToken]  = useState(initialToken)
+  const [token, setToken] = useState(initialToken);
+  const [email, setEmail] = useState(initialEmail);
   const isLoggin = !!token;
-  
-  const [cartState, dispatchCartAction] = useReducer(
-    cartReducer,
-    defaultCartState
-  );
+
+  const [cartItems, setCartItems] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  useEffect(() => {
+    getExpenceData(email);
+  }, []);
+
+  const calculateTotal = (arr) => {
+    let sum = 0;
+    arr.forEach((element) => {
+      sum = sum + element.price;
+    });
+    setTotalAmount(sum);
+  };
+
+  const getExpenceData = (email) => {
+    axios
+      .get(`https://crudcrud.com/api/276ce21994ac4534a93c597fcedfcfac/${email}`)
+      .then((res) => {
+        setCartItems(res.data);
+        calculateTotal(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const deleteExpenceData = (email, id) => {
+    axios
+      .delete(
+        `https://crudcrud.com/api/276ce21994ac4534a93c597fcedfcfac/${email}/${id}`
+      )
+      .then((res) => {
+        getExpenceData(email);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const addItemToCrud = (data, email) => {
+    axios
+      .post(
+        `https://crudcrud.com/api/276ce21994ac4534a93c597fcedfcfac/${email}`,
+        {
+          email: email,
+          itemId: data.id,
+          title: data.title,
+          price: data.price,
+          image: data.image,
+          qty: data.qty,
+        }
+      )
+      .then((res) => {
+        getExpenceData(email);
+      })
+      .catch((err) => console.log({ err: err }));
+  };
 
   const addItemToCartHandler = (item) => {
-    if(isLoggin){
-      dispatchCartAction({ type: "ADD", item: item });
-    }else{
-      alert("Please login first!")
-    }
-    
+    addItemToCrud(item, email);
+    console.log("Item added")
+    console.log({cartItems:cartItems,totalAmount:totalAmount})
   };
 
   const removeItemFromCartHandler = (id) => {
-    dispatchCartAction({ type: "REMOVE", id: id });
+    deleteExpenceData(email, id);
+    console.log("Item removed")
+    console.log({cartItems:cartItems,totalAmount:totalAmount})
   };
 
   const cartContext = {
-    ...cartState,
+    items: cartItems,
+    totalAmount: totalAmount,
     addItem: addItemToCartHandler,
     removeItem: removeItemFromCartHandler,
   };
@@ -113,25 +124,33 @@ function ContextProvider(props) {
   ];
 
   const showContext = {
-    handleClose : handleClose,
-    handleShow : handleShow,
-    show : show,
-  }
-  const loginHandler = (token) =>{
-      setToken(token)
-      localStorage.setItem('token',token)
-  }
-  const logoutHandler = () =>{
-    setToken(null)
-    localStorage.removeItem("token");
-  }
+    handleClose: handleClose,
+    handleShow: handleShow,
+    show: show,
+  };
 
-  const authContextData={
-    token:token,
-    isLoggin:isLoggin,
-    login:loginHandler,
-    logout:logoutHandler
-  }
+  const loginHandler = (token, email) => {
+    setToken(token);
+    setEmail(email);
+    localStorage.setItem("token", token);
+    localStorage.setItem("email", email);
+    getExpenceData(email);
+  };
+
+  const logoutHandler = () => {
+    setToken(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
+  };
+
+  const authContextData = {
+    token: token,
+    isLoggin: isLoggin,
+    login: loginHandler,
+    logout: logoutHandler,
+    email: email,
+  };
+
   return (
     <CartContext.Provider value={cartContext}>
       <productsContext.Provider value={products}>

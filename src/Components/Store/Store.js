@@ -9,7 +9,7 @@ function Store() {
   const products = useContext(productsContext)
   const authCtx = useContext(authContext)
   const history = useHistory()
-  console.log({authCtx:authCtx})
+
   if (!authCtx.isLoggin) {
    return history.push('/login') 
   }

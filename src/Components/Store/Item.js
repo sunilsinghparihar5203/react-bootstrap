@@ -19,7 +19,7 @@ function Item(props) {
   return (
     <div className="col-6">
       <div className="text-center">
-        <NavLink to={props.id}>
+        <NavLink to={`/store/${props.id}`}>
           <h4>{props.title}</h4>
           <img className="img-fluid" src={props.ImageURL} alt={props.title} />
         </NavLink>

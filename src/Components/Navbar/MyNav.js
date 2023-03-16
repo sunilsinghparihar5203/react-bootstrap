@@ -45,16 +45,15 @@ function MyNav(props) {
                 Contact Us
               </Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link as={NavLink} to="/login" onClick={loginLogoutHandler}>
+              {authCtx.isLoggin ? "Logout" : "Login"}
+              </Nav.Link>
+            </Nav.Item>
           </Nav>
         </Navbar.Collapse>
         <Nav className="justify-content-end">
           {props.cartBtn && authCtx.isLoggin && <CartBtn name="Cart" />}
-          <a
-            className=" mx-2 btn btn-sm  text-white"
-            onClick={loginLogoutHandler}
-          >
-            {authCtx.isLoggin ? "Logout" : "Login"}
-          </a>
         </Nav>
       </Container>
     </Navbar>

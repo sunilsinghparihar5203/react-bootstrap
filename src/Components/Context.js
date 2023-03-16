@@ -18,7 +18,8 @@ export const showCartContext = createContext({
 export const authContext = createContext({
     token:'',
     isLoggin:false,
-    login: (token)=>{},
-    logout:()=>{}
+    login: (token,email)=>{},
+    logout:()=>{},
+    email :''
 })
 
